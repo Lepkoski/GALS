@@ -1,6 +1,8 @@
 package gesser.gals.generator.java;
 
+import gesser.gals.ebnf.EbnfGrammar;
 import gesser.gals.generator.Options;
+import gesser.gals.generator.parser.AbstractGrammar;
 import gesser.gals.generator.parser.Grammar;
 import gesser.gals.generator.parser.Production;
 import gesser.gals.generator.parser.ll.LLParser;
@@ -476,7 +478,7 @@ public class JavaCommonGenerator
 		return result.toString();
 	}
 	
-	private String genLLSyntTables(Grammar g, Options.Parser type ) throws NotLLException
+	private String genLLSyntTables(AbstractGrammar g, Options.Parser type ) throws NotLLException
 	{
 		StringBuffer result = new StringBuffer();
 		
@@ -496,20 +498,20 @@ public class JavaCommonGenerator
 	    	
 	    	result.append("\n");
 	    	
-	    	result.append(emitLLTable(new LLParser(g)));
+	    	result.append(emitLLTable(new LLParser((EbnfGrammar)g)));
 				
 			result.append("\n");
 			
-			result.append(emitProductionsForLL(g));
+			result.append(emitProductionsForLL((Grammar)g));
 				
 			result.append("\n");
 				
-			result.append(emitErrorTableLL(g));
+			result.append(emitErrorTableLL((Grammar)g));
 			
 			return result.toString();
 		}
 		else if (type == RD)
-			return emitErrorTableLL(g);
+			return emitErrorTableLL((Grammar)g);
 		else
 			return null;
 	}

@@ -1,6 +1,6 @@
 package gesser.gals.ebnf.parser.tokens;
 
-public abstract enum TokenId
+public enum TokenId
 {
     EPSILON_VALUE
 	{

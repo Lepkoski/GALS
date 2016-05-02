@@ -3,36 +3,37 @@ package gesser.gals.generator.parser.ll;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sun.java_cup.internal.runtime.Symbol;
-
 import gesser.gals.HTMLDialog;
 import gesser.gals.ebnf.EbnfGrammar;
 import gesser.gals.ebnf.Production;
 import gesser.gals.ebnf.SymbolManager;
 import gesser.gals.ebnf.Terminal;
+import gesser.gals.generator.parser.AbstractGrammar;
+import gesser.gals.generator.parser.ConflictSolver;
+import gesser.gals.generator.parser.Grammar;
 import gesser.gals.util.IntegerSet;
 
 /**
- * LL1Grammar representa a classe das gramáticas LL(1)
- * Esta classe possui um algorítimo de parsing preditivo.
+ * LL1Grammar representa a classe das gramï¿½ticas LL(1)
+ * Esta classe possui um algorï¿½timo de parsing preditivo.
  *
  * @author Carlos Eduardo Gesser
  */
 
 public class LLParser
-{	
-	private EbnfGrammar g;
+{
+	private AbstractGrammar g;
     public LLParser(EbnfGrammar g) throws NotLLException
     {
     	if (! g.isFactored())
     		throw new NotLLException("Gramática não Fatorada");
     	//if (g.hasLeftRecursion())
-			//throw new NotLLException("Gramática possui Recursão à Esquerda");
+			//throw new NotLLException("Gramï¿½tica possui Recursï¿½o ï¿½ Esquerda");
     	
     	this.g = g;    	
     }
     
-    public EbnfGrammar getGrammar()
+    public AbstractGrammar getGrammar()
     {
     	return g;
     }
@@ -44,7 +45,7 @@ public class LLParser
      */
     private Set<Terminal> lookahead(Production p)
     {
-    	Set<Terminal> result = new HashSet<Terminal>(g.firstOf(p.getRhs()));
+    	Set<Terminal> result = new HashSet<Terminal>(((EbnfGrammar)g).firstOf(p.getRhs()));
         if (result.contains(SymbolManager.EPSILON))
         {
             result.remove(SymbolManager.EPSILON);
@@ -55,7 +56,7 @@ public class LLParser
 
     public int[][] generateTable()
     {
-    	Set<Integer>[][] table = new IntegerSet[symbols.length-g.FIRST_NON_TERMINAL][g.FIRST_NON_TERMINAL-1];
+    	IntegerSet[][] table = new IntegerSet[g.getSymbols().length-g.FIRST_NON_TERMINAL][g.FIRST_NON_TERMINAL-1];
 /*
         for (int i = 0; i < table.length; i++)
             for (int j = 0; j < table[i].length; j++)
@@ -65,7 +66,7 @@ public class LLParser
         {
             Production p = g.getProductions().get(i);
             Set<Terminal> pred = lookahead(p);
-            for (Terminal t : g.getSymbolManager().getTerminals())            
+            for (Terminal t : ((EbnfGrammar)g).getSymbolManager().getTerminals())            
             {
             	if (pred.contains(t))
             	{
@@ -109,7 +110,7 @@ public class LLParser
 		result.append(
 			"<HTML>"+
 			"<HEAD>"+
-			"<TITLE>Tabela de Análise LL(1)</TITLE>"+
+			"<TITLE>Tabela de Anï¿½lise LL(1)</TITLE>"+
 			"</HEAD>"+
 			"<BODY><FONT face=\"Verdana, Arial, Helvetica, sans-serif\">"+
 			"<TABLE border=1 cellspacing=0>");

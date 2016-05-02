@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import gesser.gals.ebnf.EbnfGrammar;
 import gesser.gals.generator.Options;
+import gesser.gals.generator.parser.AbstractGrammar;
 import gesser.gals.generator.parser.Grammar;
 import gesser.gals.generator.parser.Production;
 import gesser.gals.generator.parser.ll.LLParser;
@@ -528,7 +530,7 @@ public class CppCommomGenerator
 			return "";
 	}
 
-	private String syntTables(Grammar g, Options options) throws NotLLException
+	private String syntTables(AbstractGrammar g, Options options) throws NotLLException
 	{
 		if (g == null)
 			return "";
@@ -537,16 +539,16 @@ public class CppCommomGenerator
 		{
 			case RD:
 				return
-					syntErrorsLL(g);	
+					syntErrorsLL((Grammar)g);	
 			case LL:
 				return
-					syntTransTable(new LLParser(g))+
-					productionsLL(g)+
-					syntErrorsLL(g);	
+					syntTransTable(new LLParser((EbnfGrammar)g))+
+					productionsLL((Grammar)g)+
+					syntErrorsLL((Grammar)g);	
 			default: //slr, lalr, lr
-				return syntTransTable(g)+
-					productionsLR(g)+
-					syntErrorsLR(g);
+				return syntTransTable((Grammar)g)+
+					productionsLR((Grammar)g)+
+					syntErrorsLR((Grammar)g);
 		}
 	}
 

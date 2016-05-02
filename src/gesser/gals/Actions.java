@@ -213,7 +213,8 @@ public class Actions
                 try
                 {
                 	FILE_CHOOSER.setFileFilter(FileFilters.GALS_FILTER);
-                    if (FILE_CHOOSER.showOpenDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION)
+                	FILE_CHOOSER.setSelectedFile(new File("/Users/Lepkoski/Downloads/SGBD.gals"));
+//                    if (FILE_CHOOSER.showOpenDialog(MainWindow.getInstance()) == JFileChooser.APPROVE_OPTION)
                     {
                     	file = FILE_CHOOSER.getSelectedFile();
                     	InputStream is = new FileInputStream(file);

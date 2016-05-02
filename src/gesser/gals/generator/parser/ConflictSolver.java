@@ -16,8 +16,6 @@ import gesser.gals.generator.parser.lr.Command;
 import gesser.gals.generator.parser.lr.LRConflictSolver;
 import gesser.gals.util.IntegerSet;
 
-import static gesser.gals.generator.parser.lr.Command.Type.*;
-
 public class ConflictSolver extends Box implements LLConflictSolver, LRConflictSolver
 {
     private static final ConflictSolver instance = new ConflictSolver();
@@ -48,7 +46,7 @@ public class ConflictSolver extends Box implements LLConflictSolver, LRConflictS
      * LL Conflict Resolution
      */
 
-    public int resolve(Grammar g, IntegerSet conflict, int input, int stackTop)
+    public int resolve(AbstractGrammar g, IntegerSet conflict, int input, int stackTop)
     {        
         String in;
         if (input == 0)

@@ -23,9 +23,12 @@ import gesser.gals.ebnf.decl.Item;
 import gesser.gals.ebnf.decl.ProductionDecl;
 import gesser.gals.ebnf.decl.Sequence;
 import gesser.gals.ebnf.decl.SymbolItem;
+import gesser.gals.generator.parser.AbstractGrammar;
+import gesser.gals.generator.parser.Grammar;
 
 import static gesser.gals.ebnf.decl.Item.Cardinality.*;
 import gesser.gals.util.IntList;
+import sun.security.x509.AVA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +39,7 @@ import java.util.Set;
 /**
  * @author Carlos Gesser
  */
-public class EbnfGrammar
+public class EbnfGrammar extends AbstractGrammar
 {
 	private List<Production> productions = new ArrayList<Production>();
 	private SymbolManager sm;

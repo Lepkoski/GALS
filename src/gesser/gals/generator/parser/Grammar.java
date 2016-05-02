@@ -15,34 +15,19 @@ import gesser.gals.util.IntList;
 import gesser.gals.util.IntegerSet;
 
 /**
- * A classe Grammar representa as Gramáticas Livres de Contexto, utilizadas
- * pelos análisadores sintáticos
+ * A classe Grammar representa as GramÃ¡ticas Livres de Contexto, utilizadas
+ * pelos analisadores sintÃ©ticos
  *
  * @author Carlos Eduardo Gesser
  */
 
-public class Grammar implements Cloneable
-{
-    public static final int EPSILON = 0;
-    public static final int DOLLAR = 1;
-    public static final int FIRST_TERMINAL = EPSILON+2;
-    
-    public static final String EPSILON_STR = "î";
-
-    protected String[] symbols;
-    public int FIRST_NON_TERMINAL = 0;
-    public int FIRST_SEMANTIC_ACTION() { return symbols.length; }
-    public int LAST_SEMANTIC_ACTION() { return FIRST_SEMANTIC_ACTION()+SEMANTIC_ACTION_COUNT; }
-    public int SEMANTIC_ACTION_COUNT = 0;
-    protected int startSymbol;
-    
+public class Grammar extends AbstractGrammar implements Cloneable
+{   
     public IntegerSet[] firstSet;
     public IntegerSet[] followSet;
     
     private boolean normalLR = false;
 
-    protected List<Production> productions = new ArrayList<Production>();
-    
     public Grammar(gesser.gals.ebnf.EbnfGrammar g)
     {
     	System.out.println("FROM:");
@@ -87,12 +72,12 @@ public class Grammar implements Cloneable
     }
     
     /**
-     * Contrói um objeto do tipo Grammar
+     * Contrï¿½i um objeto do tipo Grammar
      *
-     * @param t símbolos terminais
-     * @param n símbolos não terminais
-     * @param p produções
-     * @param startSymbol súimbolo inicial da gramática
+     * @param t sï¿½mbolos terminais
+     * @param n sï¿½mbolos nï¿½o terminais
+     * @param p produï¿½ï¿½es
+     * @param startSymbol sï¿½imbolo inicial da gramï¿½tica
      */
     public Grammar(String[] t, String[] n, List<Production> p, int startSymbol)
     {        
@@ -103,12 +88,12 @@ public class Grammar implements Cloneable
     }
 
 	/**
-     * Contrói um objeto do tipo Grammar
+     * Contrï¿½i um objeto do tipo Grammar
      *
-     * @param t símbolos terminais
-     * @param n símbolos não terminais
-     * @param p produções
-     * @param startSymbol súimbolo inicial da gramática
+     * @param t sï¿½mbolos terminais
+     * @param n sï¿½mbolos nï¿½o terminais
+     * @param p produï¿½ï¿½es
+     * @param startSymbol sï¿½imbolo inicial da gramï¿½tica
      */
 	public Grammar(List<String> t, List<String> n, List<Production> p, int start)
 	{
@@ -125,10 +110,10 @@ public class Grammar implements Cloneable
 
     
     /**
-     * Preenche os símbolos e inicializa arrays;
+     * Preenche os sï¿½mbolos e inicializa arrays;
      *
-     * @param t símbolos terminais
-     * @param n símbolos não terminais
+     * @param t sï¿½mbolos terminais
+     * @param n sï¿½mbolos nï¿½o terminais
      */
     private void setSymbols(String[] t, String[] n, int startSymbol)
     {
@@ -146,7 +131,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * @param p produções
+     * @param p produï¿½ï¿½es
      */
     private void setProductions(List<Production> lp)
     {
@@ -163,7 +148,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * @return TRUE se x eh um símbolo terminal
+     * @return TRUE se x eh um sï¿½mbolo terminal
      */
     public final boolean isTerminal(int x)
     {
@@ -171,7 +156,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * @return TRUE se x eh um símbolo não terminal
+     * @return TRUE se x eh um sï¿½mbolo nï¿½o terminal
      */
     public final boolean isNonTerminal(int x)
     {
@@ -183,11 +168,6 @@ public class Grammar implements Cloneable
         return x >= FIRST_SEMANTIC_ACTION();
     }
 
-	public List<Production> getProductions()
-	{
-		return productions;
-	}
-	
 	public List<Production> getProductions(IntegerSet bs)	
 	{
 		List<Production> result = new ArrayList<Production>();
@@ -196,30 +176,6 @@ public class Grammar implements Cloneable
 			result.add(productions.get(i.intValue()));
 		
 		return result;
-	}
-
-	public String[] getSymbols()
-	{
-		return symbols;
-	}
-	
-	public String[] getTerminals()
-	{
-		String[] terminals = new String[FIRST_NON_TERMINAL-2];
-		System.arraycopy(symbols,2,terminals,0,terminals.length);
-		return terminals;
-	}
-
-	public String[] getNonTerminals()
-	{
-		String[] nonTerminals = new String[FIRST_SEMANTIC_ACTION() - FIRST_NON_TERMINAL];
-		System.arraycopy(symbols,FIRST_NON_TERMINAL,nonTerminals,0,nonTerminals.length);
-		return nonTerminals;
-	}
-	
-	public int getStartSymbol()
-	{
-		return startSymbol;
 	}
 
 	public Grammar asNormalLR()
@@ -254,13 +210,13 @@ public class Grammar implements Cloneable
 	}
 
 	/**
-	 * Cria uma nova produção. Se a produção criada já existe na gramática,
-	 * null é retornado.
+	 * Cria uma nova produï¿½ï¿½o. Se a produï¿½ï¿½o criada jï¿½ existe na gramï¿½tica,
+	 * null ï¿½ retornado.
 	 * 
-	 * @param lhs lado esquerdo da produção
-	 * @param rhs lado direito da produção
+	 * @param lhs lado esquerdo da produï¿½ï¿½o
+	 * @param rhs lado direito da produï¿½ï¿½o
 	 * 
-	 * @return produção gerada, ou null se esta já existir
+	 * @return produï¿½ï¿½o gerada, ou null se esta jï¿½ existir
 	 * */
 	public Production createProduction(int lhs, int... rhs)
 	{
@@ -273,13 +229,13 @@ public class Grammar implements Cloneable
 	}
 		
 	/**
-	 * Cria uma nova produção. Se a produção criada já existe na gramática,
-	 * null é retornado.
+	 * Cria uma nova produï¿½ï¿½o. Se a produï¿½ï¿½o criada jï¿½ existe na gramï¿½tica,
+	 * null ï¿½ retornado.
 	 * 
-	 * @param lhs lado esquerdo da produção
-	 * @param rhs lado direito da produção
+	 * @param lhs lado esquerdo da produï¿½ï¿½o
+	 * @param rhs lado direito da produï¿½ï¿½o
 	 * 
-	 * @return produção gerada, ou null se esta já existir
+	 * @return produï¿½ï¿½o gerada, ou null se esta jï¿½ existir
 	 * */
 	public Production createProduction(int lhs, IntList rhs)
 	{
@@ -391,7 +347,7 @@ public class Grammar implements Cloneable
 	}
 	
 	/**
-     * Calcula os conjuntos FIRST de todos os símbolos de Gramática
+     * Calcula os conjuntos FIRST de todos os sï¿½mbolos de Gramï¿½tica
      */
     private void fillFirstSet()
     {
@@ -443,7 +399,7 @@ public class Grammar implements Cloneable
     }
 	
 	/**
-     * Calcula os conjuntos FOLLOW de todos os símbolos não terminais de Gramática
+     * Calcula os conjuntos FOLLOW de todos os sï¿½mbolos nï¿½o terminais de Gramï¿½tica
      */
     private void fillFollowSet()
     {
@@ -491,7 +447,7 @@ public class Grammar implements Cloneable
     }
     
     /**
-     * Gera uma representação String dos conjuntos First e Follow
+     * Gera uma representaï¿½ï¿½o String dos conjuntos First e Follow
      * @return First e Follow como uma String
      */
     public String stringFirstFollow()
@@ -538,7 +494,7 @@ public class Grammar implements Cloneable
 			
 		result.append(
 			"<TR align=center>"+
-			"<TD bgcolor=black><FONT color=white><B>SÍMBOLO</B></FONT></TD>"+
+			"<TD bgcolor=black><FONT color=white><B>Sï¿½MBOLO</B></FONT></TD>"+
 			"<TD bgcolor=black><FONT color=white><B>FIRST</B></FONT></TD>"+
 			"<TD bgcolor=black><FONT color=white><B>FOLLOW</B></FONT></TD>"+
 			"</TR>");
@@ -581,8 +537,8 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Remove os estados improdutivos da gramática
-     * @throws EmptyGrammarException se o símbolo inicial for removido
+     * Remove os estados improdutivos da gramï¿½tica
+     * @throws EmptyGrammarException se o sï¿½mbolo inicial for removido
      */
     protected void removeImproductiveSymbols() throws EmptyGrammarException
     {
@@ -592,8 +548,8 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Remove os estados inúteis, os inprodutívos e os inalcansáveis
-     * @throws EmptyGrammarException se o símbolo inicial for removido
+     * Remove os estados inï¿½teis, os inprodutï¿½vos e os inalcansï¿½veis
+     * @throws EmptyGrammarException se o sï¿½mbolo inicial for removido
      */
     public void removeUselessSymbols() throws EmptyGrammarException
     {
@@ -603,8 +559,8 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Calcula as produções cujo lado esquerdo é <code>symbol</code>
-     * @return BitSet indicando essas produções
+     * Calcula as produï¿½ï¿½es cujo lado esquerdo ï¿½ <code>symbol</code>
+     * @return BitSet indicando essas produï¿½ï¿½es
      */
     public IntegerSet productionsFor(int symbol)
     {       
@@ -618,9 +574,9 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Transforma as recursões à esquerda indiretas em recusões diretas
-     * @param prods produções para serem processadas
-     * @return lista de produçoes sem recursão indireta
+     * Transforma as recursï¿½es ï¿½ esquerda indiretas em recusï¿½es diretas
+     * @param prods produï¿½ï¿½es para serem processadas
+     * @return lista de produï¿½oes sem recursï¿½o indireta
      */
     private List<Production> transformToFindRecursion(List<Production> prods)
     {
@@ -670,7 +626,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Reordena os símbolos e as produções
+     * Reordena os sï¿½mbolos e as produï¿½ï¿½es
      */
     public void sort()
     {    	
@@ -728,7 +684,7 @@ public class Grammar implements Cloneable
 
 
     /**
-     * Verifica as condições para esta gramática ser LL
+     * Verifica as condiï¿½ï¿½es para esta gramï¿½tica ser LL
      */
     public boolean isLL()
     {
@@ -739,7 +695,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Verifica se esta gramática possui recursão à esquerda
+     * Verifica se esta gramï¿½tica possui recursï¿½o ï¿½ esquerda
      */
     public boolean hasLeftRecursion()
     {
@@ -773,7 +729,7 @@ public class Grammar implements Cloneable
 
     /**
      * 
-     * @return um BitSet contendo produçoes não fatoradas
+     * @return um BitSet contendo produï¿½oes nï¿½o fatoradas
      */
     public IntegerSet getNonFactoratedProductions()
     {
@@ -805,7 +761,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Verifica se esta gramática está fatorada
+     * Verifica se esta gramï¿½tica estï¿½ fatorada
      */
     public boolean isFactored()
     {
@@ -829,7 +785,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Verifica a terceira condição LL
+     * Verifica a terceira condiï¿½ï¿½o LL
      */
     public boolean passThirdCondition()
     {
@@ -895,8 +851,8 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Remove os símbolos inalcançáveis da gramática
-     * @throws EmptyGrammarException se o símbolo inicial for removido
+     * Remove os sï¿½mbolos inalcanï¿½ï¿½veis da gramï¿½tica
+     * @throws EmptyGrammarException se o sï¿½mbolo inicial for removido
      */
     protected void removeUnreachableSymbols() throws EmptyGrammarException
     {
@@ -906,9 +862,9 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Calcula os símbolos que são alcansáveis
+     * Calcula os sï¿½mbolos que sï¿½o alcansï¿½veis
      *
-     * @return BitSet indicando os symbolos alcansáveis
+     * @return BitSet indicando os symbolos alcansï¿½veis
      */
     private IntegerSet getReachableSymbols()
     {
@@ -981,7 +937,7 @@ public class Grammar implements Cloneable
 		result.append(
 					"<HTML>"+
 					"<HEAD>"+
-					"<TITLE>Símbolos inúteis</TITLE>"+
+					"<TITLE>Sï¿½mbolos inï¿½teis</TITLE>"+
 					"</HEAD>"+
 					"<BODY><FONT face=\"Verdana, Arial, Helvetica, sans-serif\">");
 		
@@ -995,7 +951,7 @@ public class Grammar implements Cloneable
 			}
 		}
 		if (count == 0)
-			result.append("Não há símbolos inúteis");
+			result.append("Nï¿½o hï¿½ sï¿½mbolos inï¿½teis");
 		
 		result.append(
 					"</TABLE>"+
@@ -1006,11 +962,11 @@ public class Grammar implements Cloneable
 	}
 
     /**
-     * Gera uma representação de um BitSet utilizando os símbolos da Gramática
+     * Gera uma representaï¿½ï¿½o de um BitSet utilizando os sï¿½mbolos da Gramï¿½tica
      *
      * @param b BitSet a ser convertido
      *
-     * @return representação do BitSet
+     * @return representaï¿½ï¿½o do BitSet
      */
     public String setToStr(IntegerSet b)
     {
@@ -1025,9 +981,9 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Executa uma derivação mais a esquerda na produção passada como parametro
+     * Executa uma derivaï¿½ï¿½o mais a esquerda na produï¿½ï¿½o passada como parametro
      *
-     * @param p produção a sofrer a derivação
+     * @param p produï¿½ï¿½o a sofrer a derivaï¿½ï¿½o
      */
     public List<Production> leftMostDerive(Production p)
     {
@@ -1060,11 +1016,11 @@ public class Grammar implements Cloneable
     }
 
 	/**
-	 * Calcula o prefixo comum de um conjunto de produções.
+	 * Calcula o prefixo comum de um conjunto de produï¿½ï¿½es.
 	 *
-	 * @param prods conjunto de produções com prefixo comum.
+	 * @param prods conjunto de produï¿½ï¿½es com prefixo comum.
 	 * 
-	 * @return prefixo comum entre as produções. 
+	 * @return prefixo comum entre as produï¿½ï¿½es. 
 	 * 
 	 */
 	
@@ -1120,7 +1076,7 @@ public class Grammar implements Cloneable
     }
 
     /**
-     * Cria uma cópia da Gramática
+     * Cria uma cï¿½pia da Gramï¿½tica
      */
     public Object clone()
     {
@@ -1194,8 +1150,8 @@ public class Grammar implements Cloneable
     
     /**
      * Remove todos os symbolos, exceto os que devem ser mantidos;
-     * @paramam keep conjunto dos símbolos a serem mantidos
-     * @throws EmptyGrammarException se o símbolo inicial for removido
+     * @paramam keep conjunto dos sï¿½mbolos a serem mantidos
+     * @throws EmptyGrammarException se o sï¿½mbolo inicial for removido
      */
     private void updateSymbols(IntegerSet keep) throws EmptyGrammarException
     {

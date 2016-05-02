@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import gesser.gals.ebnf.EbnfGrammar;
+import gesser.gals.generator.parser.AbstractGrammar;
 import gesser.gals.generator.parser.Grammar;
 import gesser.gals.generator.parser.Production;
 import gesser.gals.generator.parser.ll.LLParser;
@@ -13,16 +15,16 @@ import gesser.gals.util.IntList;
 
 public class RecursiveDescendent
 {
-	private Grammar grammar;
+	private AbstractGrammar grammar;
 	private int[][] llTable;
 	private String[] symbols;
 	
 	private Map<String, Function> functions = new HashMap<String, Function>();
 	
-	public RecursiveDescendent(Grammar grammar) throws NotLLException
+	public RecursiveDescendent(AbstractGrammar grammar) throws NotLLException
 	{
 		this.grammar = grammar;
-		llTable = new LLParser(grammar).generateTable();
+		llTable = new LLParser((EbnfGrammar)grammar).generateTable();
 		symbols = grammar.getSymbols();
 		for (int i=0; i<symbols.length; i++)
 			if (symbols[i].charAt(0) == '<')

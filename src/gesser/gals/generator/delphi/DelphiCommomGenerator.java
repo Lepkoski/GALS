@@ -1,7 +1,9 @@
 package gesser.gals.generator.delphi;
 
+import gesser.gals.ebnf.EbnfGrammar;
 import gesser.gals.generator.Options;
 import gesser.gals.generator.OptionsDialog;
+import gesser.gals.generator.parser.AbstractGrammar;
 import gesser.gals.generator.parser.Grammar;
 import gesser.gals.generator.parser.Production;
 import gesser.gals.generator.parser.ll.LLParser;
@@ -492,7 +494,7 @@ public class DelphiCommomGenerator
 		return result.toString();
 	}
 	
-	private String syntTables(Grammar g) throws NotLLException
+	private String syntTables(AbstractGrammar g) throws NotLLException
 	{
 		if (g == null)
 			return "";
@@ -501,7 +503,7 @@ public class DelphiCommomGenerator
 		{
 			case RD:
 				return 
-					errorLL(g);
+					errorLL((Grammar)g);
 			case LL:	
 				return 
 					"    START_SYMBOL = "+g.getStartSymbol()+";\n"+
@@ -509,9 +511,9 @@ public class DelphiCommomGenerator
 					"    FIRST_NON_TERMINAL    = "+g.FIRST_NON_TERMINAL+";\n"+
 					"    FIRST_SEMANTIC_ACTION = "+g.FIRST_SEMANTIC_ACTION()+";\n"+
 					"\n"+
-					transTablesLL(new LLParser(g))+
-					prodsLL(g)+
-					errorLL(g)+
+					transTablesLL(new LLParser((EbnfGrammar)g))+
+					prodsLL((Grammar)g)+
+					errorLL((Grammar)g)+
 					"";
 			case SLR:
 			case LALR:
@@ -526,11 +528,11 @@ public class DelphiCommomGenerator
 					"    GO_TO  = 4;\n"+
 					"    ERROR  = 5;\n"+
 					"\n"+
-					transTablesLR(g)+
+					transTablesLR((Grammar)g)+
 					"\n"+
-					prodsLR(g)+
+					prodsLR((Grammar)g)+
 					"\n"+
-					errorLR(g);
+					errorLR((Grammar)g);
 			default:
 				return null;
 		}

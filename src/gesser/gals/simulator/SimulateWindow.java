@@ -5,7 +5,9 @@ import gesser.gals.MainWindow;
 import gesser.gals.analyser.*;
 import gesser.gals.analyser.LexicalError;
 import gesser.gals.analyser.Token;
+import gesser.gals.ebnf.EbnfGrammar;
 import gesser.gals.editor.SyntaxDocument;
+import gesser.gals.generator.parser.AbstractGrammar;
 import gesser.gals.generator.parser.Grammar;
 import gesser.gals.generator.parser.ll.*;
 import gesser.gals.generator.parser.lr.*;
@@ -143,7 +145,7 @@ public class SimulateWindow extends JDialog implements ActionListener
 	LRParserSimulator lrSim = null;
 	List<String> tokenNameList;
 	
-	public void simulateLL(FiniteAutomata fa, Grammar g, List<String> tokenNameList) throws NotLLException
+	public void simulateLL(FiniteAutomata fa, AbstractGrammar g, List<String> tokenNameList) throws NotLLException
 	{	
 		lex.setEnabled(fa != null);
 		synt.setEnabled(g != null);
@@ -161,7 +163,7 @@ public class SimulateWindow extends JDialog implements ActionListener
 			
 		if (g != null)
 		{
-			LLParser ll1 = new LLParser(g);
+			LLParser ll1 = new LLParser((EbnfGrammar)g);
 			ll1Sim = new LL1ParserSimulator(ll1);
 			lrSim = null;
 		}
